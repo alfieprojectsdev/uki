@@ -1,0 +1,18 @@
+# /etc/pam.d/common-auth - AAL2 Target (Strict MFA)
+# NIST: Two factors (Something you HAVE + Something you KNOW) - ADR 3 & 8
+
+# Brute-force protection (ADR 8)
+auth    required    pam_faillock.so preauth silent audit deny=5 unlock_time=900
+
+# Primary factor: USB (Something you HAVE)
+auth    required    pam_usb.so
+
+# Secondary factor: Password (Something you KNOW)
+auth    required    pam_unix.so nullok_secure
+
+# Brute-force failure logging
+auth    [default=die] pam_faillock.so authfail audit deny=5 unlock_time=900
+auth    required    pam_faillock.so authsucc audit deny=5 unlock_time=900
+
+auth    required    pam_permit.so
+auth    optional    pam_cap.so

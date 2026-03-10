@@ -1,0 +1,8 @@
+# /etc/pam.d/common-auth - AAL1 Target (Passwordless)
+# NIST: One factor (Something you HAVE) - ADR 3
+
+auth    [success=2 default=ignore]    pam_usb.so
+auth    [success=1 default=ignore]    pam_unix.so nullok_secure
+auth    requisite                     pam_deny.so
+auth    required                      pam_permit.so
+auth    optional                      pam_cap.so
